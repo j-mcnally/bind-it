@@ -1,7 +1,7 @@
 module BindIt
-  
+
   class JarLoader
-    
+
     # Configuration options.
     class << self
       # An array of flags to pass to the JVM machine.
@@ -9,11 +9,11 @@ module BindIt
       # A log file to send JVM output to.
       attr_accessor :log_file
     end
-    
+
     # Default configuration options.
     self.jvm_args = []
     self.log_file = nil
-  
+
     # Load a JAR through Jruby/Rjb.
     def self.load(jar, path)
       if !::File.readable?(path + jar)
@@ -27,19 +27,19 @@ module BindIt
         load_jar_rjb(jar,path)
       end
     end
-    
+
     # Load a Jruby jar.
     def self.load_jar_jruby(jar, path)
       require path + jar
     end
-    
+
     # Laad an Rjb jar.
     def self.load_jar_rjb(jar,path)
       self.init_rjb unless ::Rjb::loaded?
-      jar = path + jar
+      jar = path.to_s + jar
       ::Rjb::add_jar(jar)
     end
-    
+
     # Load Rjb and create Java VM.
     def self.init_rjb
       ::Rjb::load(nil, self.jvm_args)
@@ -65,5 +65,5 @@ module BindIt
     end
 
   end
-  
+
 end
